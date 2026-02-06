@@ -62,31 +62,56 @@ const BASE_URL = "http://localhost:5000";
 
 // Get all books
 async function getAllBooksAsync() {
-  const response = await axios.get(`${BASE_URL}/`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/`);
+    return response.data;
+  } catch (error) {
+    return { message: "Error fetching all books" };
+  }
 }
 
 // Get book by ISBN
 async function getBookByISBNAsync(isbn) {
-  const response = await axios.get(`${BASE_URL}/isbn/${isbn}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/isbn/${isbn}`);
+    if (!response.data || Object.keys(response.data).length === 0) {
+      return { message: "Book not found" };
+    }
+    return response.data;
+  } catch (error) {
+    return { message: "Error fetching book by ISBN" };
+  }
 }
 
 // Get books by author
 async function getBooksByAuthorAsync(author) {
-  const response = await axios.get(`${BASE_URL}/author/${author}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/author/${author}`);
+    if (!response.data || Object.keys(response.data).length === 0) {
+      return { message: "No books found for this author" };
+    }
+    return response.data;
+  } catch (error) {
+    return { message: "Error fetching books by author" };
+  }
 }
 
 // Get books by title
 async function getBooksByTitleAsync(title) {
-  const response = await axios.get(`${BASE_URL}/title/${title}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/title/${title}`);
+    if (!response.data || Object.keys(response.data).length === 0) {
+      return { message: "No books found for this title" };
+    }
+    return response.data;
+  } catch (error) {
+    return { message: "Error fetching books by title" };
+  }
 }
 
 module.exports.asyncTasks = {
   getAllBooksAsync,
   getBookByISBNAsync,
   getBooksByAuthorAsync,
-  getBooksByTitleAsync,
+  getBooksByTitleAsync
 };
